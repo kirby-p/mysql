@@ -37,7 +37,7 @@ var storeInventory = function() {
 };
 
 var idInput = function(){	
-	inquirer.prompt({
+	inquirer.prompt([{
 		name: "idInput",
 		type: "input",
 		message: "Please input the ID number of the product you would like to purchase"
@@ -50,9 +50,9 @@ var idInput = function(){
 		name: "quantity",
 		type: "input",
 		message: "How many would you like?"
-	}).then(function(answer){
+	}]).then(function(answer){
 		connection.query('SELECT * FROM Products WHERE ?', {ItemID: answer.idInput}, function(err, res){
-				console.log("You requested " + answer.quantity + " res[0].ProductName);
+				console.log("You requested " + answer.quantity + " " + res[0].ProductName + "s.");
 		})
 	})
 };
