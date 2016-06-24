@@ -53,6 +53,22 @@ var idInput = function(){
 	}]).then(function(answer){
 		connection.query('SELECT * FROM Products WHERE ?', {ItemID: answer.idInput}, function(err, res){
 				console.log("You requested " + answer.quantity + " " + res[0].ProductName + "s.");
+				var reqAmount = answer.quantity;
+				var stock = res[0].StockQuantity;
+				var prod = res[0].ProductName;
+
+				if(reqAmount <= stock){
+					console.log("The items are in stock and your order has been placed.");
+					console.log("Order Summary: " + reqAmount + " " + prod + "s");
+					console.log("Total: " + "$" + (res[0].Price * reqAmount));
+					connection.query("UPDATE Products SET ? WHERE ?", 
+						[{StockQuantity: (stock - reqAmount)},{ProductName: prod}], function(err,res){
+						});
+				}
+				else{
+					console.log("The items are not in stock.");
+					
+				}
 		})
 	})
 };
