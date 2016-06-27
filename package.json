@@ -1,0 +1,24 @@
+{
+  "name": "kirby_pagunsan",
+  "version": "1.0.0",
+  "description": "inquirer and mysql npms",
+  "main": "BamazonCustomer.js",
+  "dependencies": {
+    "inquirer": "^1.0.3",
+    "mysql": "^2.11.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kirby-p/mysql.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kirby-p/mysql/issues"
+  },
+  "homepage": "https://github.com/kirby-p/mysql#readme"
+}
