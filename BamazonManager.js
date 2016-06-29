@@ -111,12 +111,6 @@ var addInventory = function(){
 			var product = res[0].ProductName;
 			var newQuantity = stock + reqAmount;
 
-			console.log(stock);
-			console.log(reqAmount);
-			console.log(stock + reqAmount);
-			console.log(stock - reqAmount);
-			console.log(newQuantity);
-
 			connection.query("UPDATE Products SET ? WHERE ?",[{StockQuantity: (stock + reqAmount)},{ItemID: answer.productID}],function(err,res){
 				console.log("You have added: " + answer.quantity + "x " + product + ".");
 			});
@@ -124,14 +118,51 @@ var addInventory = function(){
 				console.log("Item ID: " + res[0].ItemID);
 				console.log("Product: " + product);
 				console.log("Price: \$" + res[0].Price);
-				console.log("Quantity: " + stock);
+				console.log("New Quantity: " + newQuantity);
 				console.log("*******************************");
-
+			managerView();
 		});
 	})
 }
 
 var addProduct = function(){
 	console.log("You chose to add a new product");
-	managerView();
+	inquirer.prompt([{
+		name: "newProductID",
+		type: "input",
+		message: "Enter a new product ID"
+	}, {
+		name: "newProductName",
+		type: "input",
+		message: "Enter the new product name"
+	}, {
+		name: "newDepartment",
+		type: "input",
+		message: "Enter the new product's department"
+	}, {
+		name: "newPrice",
+		type: "input",
+		message: "Enter the new product's price"
+	}, {
+		name: "newProdQuantity",
+		type: "input",
+		message: "Enter how many you would like to add"
+	}]).then(function(answer){
+		connection.query("INSERT INTO Products SET ?", {
+				ItemID: answer.newProductID, 
+				ProductName: answer.newProductName,
+				DepartmentName: answer.newDepartment,
+				Price: answer.newPrice,
+				StockQuantity: answer.newProdQuantity
+				}, function(err, res){
+					console.log(res);
+				// console.log("*******************************");
+				// console.log("Item ID: " + res[0].ItemID);
+				// console.log("Product: " + product);
+				// console.log("Price: \$" + res[0].Price);
+				// console.log("New Quantity: " + newQuantity);
+				// console.log("*******************************");
+			managerView();
+		});
+	})
 }
