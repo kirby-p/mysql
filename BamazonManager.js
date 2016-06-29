@@ -51,16 +51,86 @@ var managerView = function(){
 
 var viewProducts = function(){
 	console.log("You chose to view products for sale");
-	managerView();
+	connection.query("SELECT * FROM Products", function(err, res){
+		console.log("");
+		console.log("*******************************");
+		if(err) throw err;
+		// Displays all products listed in database
+		for(var i = 0; i < res.length; i++){
+			console.log("Item ID: " + res[i].ItemID);
+			console.log("Product: " + res[i].ProductName);
+			console.log("Price: \$" + res[i].Price);
+			console.log("Quantity: " + res[i].StockQuantity);
+			console.log("*******************************");
+		}
+		// Call idInput function once program finishes listing all products
+		if(i = res.length){
+			managerView();
+		}
+	})
+
 };
+
 var lowInventory = function(){
 	console.log("You chose to view low inventory");
-	managerView();
+	connection.query("SELECT * FROM Products", function(err, res){
+		console.log("");
+		console.log("*******************************");
+		if(err) throw err;
+		// Displays all products listed in database
+		for(var i = 0; i < res.length; i++){
+			if(res[i].StockQuantity < 5){
+				console.log("Item ID: " + res[i].ItemID);
+				console.log("Product: " + res[i].ProductName);
+				console.log("Price: \$" + res[i].Price);
+				console.log("Quantity: " + res[i].StockQuantity);
+				console.log("*******************************");
+			}
+		}
+		// Call idInput function once program finishes listing all products
+		if(i = res.length){
+			managerView();
+		}
+	})
 }
+
 var addInventory = function(){
 	console.log("You chose to add inventory");
-	managerView();
+	inquirer.prompt([{
+		name: "productID",
+		type: "input",
+		message: "Enter the product ID of the product you would like to add"
+	}, {
+		name: "quantity",
+		type: "input",
+		message: "Enter the amount you would like to add"
+	}]).then(function(answer){
+		connection.query("SELECT * FROM Products WHERE ?", {ItemID: answer.productID}, function(err, res){
+			var stock = Number(res[0].StockQuantity);
+			var reqAmount = Number(answer.quantity);
+			var product = res[0].ProductName;
+			var newQuantity = stock + reqAmount;
+
+			console.log(stock);
+			console.log(reqAmount);
+			console.log(stock + reqAmount);
+			console.log(stock - reqAmount);
+			console.log(newQuantity);
+
+			connection.query("UPDATE Products SET ? WHERE ?",[{StockQuantity: (stock + reqAmount)},{ItemID: answer.productID}],function(err,res){
+				console.log("You have added: " + answer.quantity + "x " + product + ".");
+			});
+				console.log("*******************************");
+				console.log("Item ID: " + res[0].ItemID);
+				console.log("Product: " + product);
+				console.log("Price: \$" + res[0].Price);
+				console.log("Quantity: " + stock);
+				console.log("*******************************");
+
+		});
+	})
 }
+
 var addProduct = function(){
 	console.log("You chose to add a new product");
 	managerView();
